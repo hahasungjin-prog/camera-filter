@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+    font-size: 11px;
+    color: #111;
+    background: #fff;
+  }
+
+  /* ── 표지 ── */
+  .cover {
+    width: 210mm;
+    height: 297mm;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    page-break-after: always;
+    color: #fff;
+  }
+  .cover h1 { font-size: 38px; font-weight: 900; letter-spacing: 2px; margin-bottom: 8px; }
+  .cover h2 { font-size: 26px; font-weight: 400; color: #ccc; margin-bottom: 30px; }
+  .cover .sub { font-size: 13px; color: #888; margin-bottom: 60px; }
+  .cover .formula {
+    border: 1px solid #444;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #ddd;
+    letter-spacing: 1px;
+  }
+  .cover .formula span { color: #fff; font-weight: 700; }
+
+  /* ── 본문 ── */
+  .page {
+    width: 210mm;
+    padding: 14mm 14mm 12mm;
+    page-break-after: always;
+  }
+
+  .page-title {
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 4px;
+  }
+  .page-subtitle {
+    font-size: 10px;
+    color: #888;
+    margin-bottom: 12px;
+  }
+
+  /* 공식 박스 */
+  .formula-box {
+    background: #EFF6FF;
+    border: 1.5px solid #2563EB;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .formula-box .label { font-size: 10px; color: #2563EB; font-weight: 700; margin-bottom: 4px; }
+  .formula-box .eq { font-size: 13px; font-weight: 700; color: #111; letter-spacing: 1px; }
+
+  .example-box {
+    background: #FFFBEB;
+    border: 1.5px solid #D97706;
+    border-radius: 8px;
+    padding: 8px 16px;
+    margin-bottom: 14px;
+    text-align: center;
+    font-size: 10px;
+    color: #444;
+  }
+  .example-box strong { color: #92400E; }
+
+  /* 섹션 헤더 */
+  .section-header {
+    background: #000;
+    color: #fff;
+    padding: 7px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 14px 0 6px;
+  }
+  .section-header .badge {
+    display: inline-block;
+    background: #fff;
+    color: #000;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-right: 6px;
+  }
+  .section-header .hint {
+    font-size: 9px;
+    color: #aaa;
+    font-weight: 400;
+    margin-left: 8px;
+  }
+
+  /* 필터 테이블 */
+  table.filters {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 4px;
+  }
+  table.filters th {
+    background: #f3f4f6;
+    padding: 5px 8px;
+    font-size: 9px;
+    color: #555;
+    font-weight: 700;
+    text-align: left;
+    border-bottom: 2px solid #000;
+  }
+  table.filters td {
+    padding: 5px 8px;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: top;
+    font-size: 10px;
+  }
+  table.filters tr:nth-child(even) td { background: #f9fafb; }
+  td.num {
+    width: 28px;
+    text-align: center;
+    font-weight: 700;
+    background: #000 !important;
+    color: #fff;
+    font-size: 11px;
+  }
+  td.name { width: 130px; font-weight: 700; font-size: 11px; }
+  td.desc { width: 130px; color: #555; }
+  td.kw { color: #777; font-size: 9px; line-height: 1.5; }
+
+  /* 조합 테이블 */
+  table.combo {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 6px;
+  }
+  table.combo th {
+    background: #000;
+    color: #fff;
+    padding: 6px 10px;
+    font-size: 10px;
+    text-align: center;
+  }
+  table.combo td {
+    padding: 6px 10px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 10px;
+    text-align: center;
+  }
+  table.combo tr.even td { background: #f9fafb; }
+
+  /* TIP */
+  .tip {
+    background: #F0FDF4;
+    border: 1.5px solid #16A34A;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-top: 14px;
+    text-align: center;
+    font-size: 10px;
+    color: #333;
+  }
+  .tip strong { color: #15803D; }
+
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 표지 -->
+<div class="cover">
+  <h1>필름 감성</h1>
+  <h2>프롬프트 가이드</h2>
+  <div class="sub">Film Aesthetic Prompt Guide &nbsp;·&nbsp; 총 28종 필터 · 기법 정리</div>
+  <div class="formula">
+    <span>필름</span> &nbsp;+&nbsp; <span>빛</span> &nbsp;+&nbsp; <span>기법</span> &nbsp;+&nbsp; <span>색보정</span> &nbsp;=&nbsp; <span>원하는 필름 감성</span>
+  </div>
+</div>
+
+<!-- 본문 p1 -->
+<div class="page">
+  <div class="page-title">필름 사진 감성 프롬프트 가이드</div>
+  <div class="page-subtitle">스크린샷 학습 기반 &nbsp;·&nbsp; 총 28개 필터/기법 정리</div>
+
+  <div class="formula-box">
+    <div class="label">핵심 공식</div>
+    <div class="eq">필름 이름 &nbsp;+&nbsp; 빛 &nbsp;+&nbsp; 기법 &nbsp;+&nbsp; 색보정 &nbsp;=&nbsp; 원하는 필름 감성</div>
+  </div>
+
+  <div class="example-box">
+    <strong>예시</strong> &nbsp; Kodak Portra 400 &nbsp;+&nbsp; soft diffused daylight &nbsp;+&nbsp; soft overexposed highlights &nbsp;+&nbsp; fine film grain, warm tones &nbsp;=&nbsp; <strong>따뜻한 웨딩 필름 감성 완성!</strong>
+  </div>
+
+  <div class="section-header">
+    <span class="badge">01</span>필름 종류
+    <span class="hint">실제 필름 브랜드 기반 색감 재현</span>
+  </div>
+  <table class="filters">
+    <tr><th>#</th><th>이름</th><th>설명</th><th>AI 프롬프트 키워드</th></tr>
+    
+        <tr>
+          <td class="num">1</td>
+          <td class="name">Kodak Portra 400</td>
+          <td class="desc">부드러운 피부톤, 크리미한 색감</td>
+          <td class="kw">Kodak Portra 400 / soft creamy skin tones / warm natural light / fine film grain / low contrast / highlight blown soft / wedding portrait travel</td>
+        </tr>
+        <tr>
+          <td class="num">2</td>
+          <td class="name">Kodak Gold 200</td>
+          <td class="desc">따뜻한 노란빛, 레트로 무드</td>
+          <td class="kw">Kodak Gold 200 / warm golden tones / slightly coarse grain / retro everyday snapshot / faded color palette / rich saturated colors / family snapshot feeling</td>
+        </tr>
+        <tr>
+          <td class="num">3</td>
+          <td class="name">Fujifilm Pro 400H</td>
+          <td class="desc">낮은 채도, 청량한 그린톤</td>
+          <td class="kw">Fujifilm Pro 400H / low saturation / soft green color shift / dreamy softness / overexposed by one stop / muted desaturated tones / humid forest atmosphere</td>
+        </tr>
+        <tr>
+          <td class="num">4</td>
+          <td class="name">Kodak Ektar 100</td>
+          <td class="desc">높은 채도, 선명한 디테일</td>
+          <td class="kw">Kodak Ektar 100 / high saturation / extremely sharp detail / vivid colors / punchy contrast / no grain / landscape architecture sky</td>
+        </tr>
+        <tr>
+          <td class="num">5</td>
+          <td class="name">Ilford HP5</td>
+          <td class="desc">흑백, 강한 명암, 거친 그레인</td>
+          <td class="kw">Ilford HP5 black and white / strong shadow contrast / heavy visible grain / documentary street photography mood / Kodak Portra on cloudy day / melancholic realism</td>
+        </tr>
+        <tr>
+          <td class="num">6</td>
+          <td class="name">Kodak ColorPlus</td>
+          <td class="desc">일상적, 따뜻한 색감, 약간 빛 번짐</td>
+          <td class="kw">Kodak ColorPlus / warm everyday tones / slight halation on highlights / natural color rendering / casual snapshot / slightly faded / sunlit warmth</td>
+        </tr>
+        <tr>
+          <td class="num">7</td>
+          <td class="name">Fuji Superia 400</td>
+          <td class="desc">선명한 색감, 자연스러운 그린</td>
+          <td class="kw">Fuji Superia 400 / vivid natural colors / green-leaning midtones / sharp everyday snapshot / medium grain / natural daylight rendering</td>
+        </tr>
+        <tr>
+          <td class="num">8</td>
+          <td class="name">Cinestill 50D</td>
+          <td class="desc">시네마틱, 텅스텐 빛, 도심 야경</td>
+          <td class="kw">Cinestill 50D / cinematic film look / tungsten light / halation glow around lights / urban night scene / blooming highlights / red and orange halation / moody city atmosphere</td>
+        </tr>
+        <tr>
+          <td class="num">9</td>
+          <td class="name">Lomography 800</td>
+          <td class="desc">실험적, 높은 그레인, 비비드</td>
+          <td class="kw">Lomography 800 / heavy grain / vivid experimental colors / strong vignetting / cross-process effect / lomography aesthetic / unpredictable color shifts / lo-fi analog</td>
+        </tr>
+  </table>
+
+  <div class="section-header">
+    <span class="badge">02</span>감성
+    <span class="hint">분위기 / 스타일 기반 필터</span>
+  </div>
+  <table class="filters">
+    <tr><th>#</th><th>이름</th><th>설명</th><th>AI 프롬프트 키워드</th></tr>
+    
+        <tr>
+          <td class="num">10</td>
+          <td class="name">녹진한 숲속 필름 감성</td>
+          <td class="desc">습한 공기, 그린 그림자, 부드러운 숲</td>
+          <td class="kw">Fujifilm Pro 400H aesthetic / overexposed by one stop / green color shift in shadows / humid forest atmosphere / low contrast / dreamy softness / soft film grain / muted desaturated tones</td>
+        </tr>
+        <tr>
+          <td class="num">11</td>
+          <td class="name">일본식 필름 감성</td>
+          <td class="desc">일회용 카메라, 파스텔, 소프트 포커스</td>
+          <td class="kw">Fujifilm disposable camera aesthetic / soft pastel tones / pink and cream color shift / natural vignetting on edges / slight lens distortion / quietly Japanese film photography / Moshi Moshi style / soft focus</td>
+        </tr>
+        <tr>
+          <td class="num">12</td>
+          <td class="name">영국식 필름 감성</td>
+          <td class="desc">흐린 날, 회색 하늘, 다큐 무드</td>
+          <td class="kw">British film photography aesthetic / overcast diffused daylight / cool grey undertones / strong shadow contrast / heavy visible grain / documentary street photography mood / Ilford HP5 or Kodak Portra on cloudy day</td>
+        </tr>
+        <tr>
+          <td class="num">13</td>
+          <td class="name">푸른 느낌 필름 감성</td>
+          <td class="desc">시안, 블루 색감, 실험적 무드</td>
+          <td class="kw">cross-processed film photography / cyan and blue color shift / cool teal shadows / slightly unreal color palette / lomography cross process effect / cold and ethereal atmosphere</td>
+        </tr>
+        <tr>
+          <td class="num">14</td>
+          <td class="name">웨딩 필름 감성</td>
+          <td class="desc">크리미한 화이트, 자연광, 로맨틱</td>
+          <td class="kw">Kodak Portra 800 film wedding photography / creamy white tones / soft blown out highlights / warm glowing skin / natural light only no flash / romantic and timeless mood / film grain visible but fine</td>
+        </tr>
+        <tr>
+          <td class="num">15</td>
+          <td class="name">스냅 필름 감성</td>
+          <td class="desc">순간 포착, 플래시, 생활감</td>
+          <td class="kw">disposable camera snapshot aesthetic / direct flash photography / slightly flat lighting / vivid candid colors / imperfect composition / caught in the moment / early 2000s party photo feeling</td>
+        </tr>
+        <tr>
+          <td class="num">16</td>
+          <td class="name">35mm 스냅샷</td>
+          <td class="desc">순간 감정, 따뜻한 기억, 빛 번짐</td>
+          <td class="kw">35mm film snapshot / Kodak ColorPlus or Fuji Superia 400 / natural sunlight / halation on highlights / light leaks / warm nostalgic tones / candid emotional moment / grain / film border</td>
+        </tr>
+  </table>
+</div>
+
+<!-- 본문 p2 -->
+<div class="page">
+  <div class="section-header">
+    <span class="badge">03</span>기법 — 특수 효과
+    <span class="hint">필름 위에 얹는 추가 효과 (Halation · Bloom 등)</span>
+  </div>
+  <table class="filters">
+    <tr><th>#</th><th>이름</th><th>설명</th><th>AI 프롬프트 키워드</th></tr>
+    
+        <tr>
+          <td class="num">17</td>
+          <td class="name">Halation 빛 번짐</td>
+          <td class="desc">강한 빛 주변 몽환적 번짐</td>
+          <td class="kw">halation effect / light bleeding around bright sources / dreamy glow / warm light halo / analog film halation / soft edges around highlights / Cinestill halation</td>
+        </tr>
+        <tr>
+          <td class="num">18</td>
+          <td class="name">Bloom 하이라이트 퍼짐</td>
+          <td class="desc">밝은 영역이 퍼지는 꿈결 분위기</td>
+          <td class="kw">bloom effect / highlight spreading / dreamy soft glow / overexposed highlights bleeding into midtones / ethereal atmosphere / soft hazy light / romantic bloom</td>
+        </tr>
+        <tr>
+          <td class="num">19</td>
+          <td class="name">Lifted Blacks 검정 띄우기</td>
+          <td class="desc">완전한 검정 대신 살짝 회색으로</td>
+          <td class="kw">lifted blacks / faded shadows / matte black tones / vintage faded look / soft shadow detail / no pure black / milky shadows / instagram film preset feel</td>
+        </tr>
+        <tr>
+          <td class="num">20</td>
+          <td class="name">Chromatic Aberration 색수차</td>
+          <td class="desc">렌즈 끝 색 번짐, 필름 느낌 강화</td>
+          <td class="kw">chromatic aberration / color fringing on edges / lens aberration effect / RGB color split on borders / analog lens distortion / film lens imperfection</td>
+        </tr>
+        <tr>
+          <td class="num">21</td>
+          <td class="name">Soft Diffusion 확산 필터</td>
+          <td class="desc">빛을 부드럽게 퍼뜨려 피부와 경계를 은은하게</td>
+          <td class="kw">soft diffusion filter / gentle soft focus / skin smoothing glow / dreamy diffused light / pro-mist filter effect / romantic haze / soft edges / portrait diffusion</td>
+        </tr>
+  </table>
+
+  <div class="section-header">
+    <span class="badge">04</span>기법 — 노출 · 빛 · 현상
+    <span class="hint">Overexposure · Diffused Light · Film Grain 등</span>
+  </div>
+  <table class="filters">
+    <tr><th>#</th><th>이름</th><th>설명</th><th>AI 프롬프트 키워드</th></tr>
+    
+        <tr>
+          <td class="num">22</td>
+          <td class="name">Overexposure 오버노출</td>
+          <td class="desc">하이라이트 날림, 부드럽고 몽환적</td>
+          <td class="kw">soft overexposed highlights / slightly blown out whites / bright airy atmosphere / overexposed film look / dreamy washed out / wedding bright snap</td>
+        </tr>
+        <tr>
+          <td class="num">23</td>
+          <td class="name">Underexposure 언더노출</td>
+          <td class="desc">그림자 깊어짐, 무게감 있는 분위기</td>
+          <td class="kw">slightly underexposed shadows / deep muted tones / dark cinematic mood / heavy shadows / underexposed film / moody dark atmosphere / British film look</td>
+        </tr>
+        <tr>
+          <td class="num">24</td>
+          <td class="name">Diffused Light 확산광</td>
+          <td class="desc">빛이 부드럽게 퍼짐, 피부 표현 좋아짐</td>
+          <td class="kw">soft diffused daylight / gentle shadows / light filtered through sheer curtains / diffused window light / flattering skin tone light / soft portrait lighting</td>
+        </tr>
+        <tr>
+          <td class="num">25</td>
+          <td class="name">Cross Process 크로스 프로세스</td>
+          <td class="desc">색이 비현실적으로 변함, 청록 계열</td>
+          <td class="kw">cross processed film colors / cyan color shift / unusual color palette / experimental color rendering / lomography cross process / teal and orange shift / surreal color</td>
+        </tr>
+        <tr>
+          <td class="num">26</td>
+          <td class="name">Soft Focus 소프트 포커스</td>
+          <td class="desc">초점이 부드러움, 회상 같은 느낌</td>
+          <td class="kw">soft focus / dreamy blur / gentle lens softness / portrait soft focus / romantic haze / vintage soft lens / memory-like blur / Japanese film softness</td>
+        </tr>
+        <tr>
+          <td class="num">27</td>
+          <td class="name">Vignetting 비네팅</td>
+          <td class="desc">가장자리 어두워짐, 중앙 집중</td>
+          <td class="kw">subtle vignetting / darkened edges / center-focused composition / natural lens vignette / analog camera vignetting / snapshot vignette / focus drawing</td>
+        </tr>
+        <tr>
+          <td class="num">28</td>
+          <td class="name">Film Grain 필름 그레인</td>
+          <td class="desc">필름 입자 표현, 아날로그 질감</td>
+          <td class="kw">fine film grain / visible analog texture / 35mm film grain / heavy grain / natural film noise / analog film feeling / grain overlay / ISO 400 grain</td>
+        </tr>
+  </table>
+
+  <div class="section-header">
+    <span class="badge">05</span>조합 예시
+    <span class="hint">필름 + 기법 조합 추천</span>
+  </div>
+  <table class="combo">
+    <tr><th>상황</th><th>필름 / 감성</th><th>기법 1</th><th>기법 2</th></tr>
+    
+        <tr class="even">
+          <td>웨딩 · 인물</td><td>Kodak Portra 400</td><td>Diffused Light 확산광</td><td>Soft Diffusion 확산 필터</td>
+        </tr>
+        <tr class="">
+          <td>아기 · 순수</td><td>일본식 필름 감성</td><td>Overexposure 오버노출</td><td>Bloom 하이라이트 퍼짐</td>
+        </tr>
+        <tr class="even">
+          <td>도시 · 야경</td><td>Cinestill 50D</td><td>Underexposure 언더노출</td><td>Halation 빛 번짐</td>
+        </tr>
+        <tr class="">
+          <td>레트로 · 일상</td><td>Kodak Gold 200</td><td>Film Grain 필름 그레인</td><td>Vignetting 비네팅</td>
+        </tr>
+        <tr class="even">
+          <td>숲 · 자연</td><td>녹진한 숲속 필름 감성</td><td>Diffused Light 확산광</td><td>Lifted Blacks 검정 띄우기</td>
+        </tr>
+        <tr class="">
+          <td>몽환 · 회상</td><td>Fujifilm Pro 400H</td><td>Soft Focus 소프트 포커스</td><td>Chromatic Aberration 색수차</td>
+        </tr>
+        <tr class="even">
+          <td>스트리트 · 다큐</td><td>영국식 필름 감성</td><td>Underexposure 언더노출</td><td>Film Grain 필름 그레인</td>
+        </tr>
+        <tr class="">
+          <td>실험 · 아트</td><td>Lomography 800</td><td>Cross Process 크로스 프로세스</td><td>Halation 빛 번짐</td>
+        </tr>
+  </table>
+
+  <div class="tip">
+    <strong>TIP</strong> &nbsp; 필름 이름만 바꿔도, 빛 · 노출 · 기법 · 색보정을 조합하면 완전히 다른 분위기를 만들 수 있습니다!
+  </div>
+</div>
+
+</body>
+</html>
