@@ -3,9 +3,12 @@ import streamlit.components.v1 as components
 import tempfile
 import os
 
-for _k in ["ANTHROPIC_API_KEY", "NOTION_TOKEN", "NOTION_DATABASE_ID"]:
-    if _k in st.secrets:
-        os.environ[_k] = st.secrets[_k]
+try:
+    for _k in ["ANTHROPIC_API_KEY", "NOTION_TOKEN", "NOTION_DATABASE_ID"]:
+        if _k in st.secrets:
+            os.environ[_k] = st.secrets[_k]
+except Exception:
+    pass
 
 from tools.photo_analyzer import FILTERS, analyze_scene, get_recommendations, generate_prompt, save_result
 from tools.notion_uploader import upload
