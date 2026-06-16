@@ -35,6 +35,30 @@ st.caption("사진을 올리고 원하는 필터를 선택하면 AI 프롬프트
 
 st.divider()
 
+# 필터 미리보기 (업로드 전 상시 표시)
+with st.expander("🎞 필터 둘러보기 (사진 없이 미리 보기)", expanded=False):
+    ASSETS_DIR_PREVIEW = os.path.join(os.path.dirname(__file__), "assets", "filters")
+    preview_tab1, preview_tab2, preview_tab3 = st.tabs(["🎞 필름 종류", "🎨 감성", "✨ 기법"])
+    def _preview_grid(nums):
+        cols = st.columns(3)
+        for i, num in enumerate(nums):
+            f = FILTERS[num]
+            with cols[i % 3]:
+                for ext in ["jpg", "jpeg", "png", "webp"]:
+                    p = os.path.join(ASSETS_DIR_PREVIEW, f"{num}.{ext}")
+                    if os.path.exists(p):
+                        st.image(p, use_container_width=True)
+                        break
+                st.markdown(f"**{f['name']}**  \n{f['desc']}", unsafe_allow_html=False)
+    with preview_tab1:
+        _preview_grid(range(1, 10))
+    with preview_tab2:
+        _preview_grid(range(10, 17))
+    with preview_tab3:
+        _preview_grid(range(17, 29))
+
+st.divider()
+
 # 1단계: 사진 업로드
 st.subheader("1. 사진 업로드")
 uploaded = st.file_uploader("사진을 선택하세요", type=["jpg", "jpeg", "png", "webp"])
